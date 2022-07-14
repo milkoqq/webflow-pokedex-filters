@@ -12,7 +12,9 @@ testPokemon.classList.add('is--test')
 
 let numOfPokemons = 151
 let pokemons = [];
-let tempPokemons = pokemons;
+let tempPokemons;
+let sorting = 'idasc'
+
 
 
 
@@ -34,7 +36,7 @@ const getPokemon = async (num) => {
             const data = await res.json();
             pokemons.push(data);
         }
-
+        tempPokemons = [...pokemons]
         //Log fetch time in console.
         clearInterval(intervalFetch);
         console.log(`Pokemons Fetched! in ${(time / 1000).toFixed(2)} seconds.`);
@@ -100,8 +102,8 @@ function sortPokemons(array, attr) {
     // console.log(attr)
     // console.log("After Pressing The Button:", order);
     pokeContainer.innerHTML = "";
-
-    order === true
+    console.log(tempPokemons.length)
+    order === false
         ? array.sort((a, b) => a[attr] - b[attr])
         : array.sort((a, b) => b[attr] - a[attr]);
     array.forEach((pokemon) => {
@@ -111,22 +113,30 @@ function sortPokemons(array, attr) {
 
 function filterPokemons(array, type) {
     pokeContainer.innerHTML = "";
+    console.log(`before FILTER: ${array.length}`)
 
-    let filteredArr = array.filter(pokemon => pokemon.types[0].type.name === type)
-    filteredArr.forEach((pokemon) => {
+    array = array.filter(pokemon => pokemon.types[0].type.name === type)
+    array.forEach((pokemon) => {
         renderPokemon(pokemon)
     })
-
-
+    console.log(`AFTER FILTER: ${array.length}`)
+    return array
 }
 
+
 sortSelect.addEventListener('change', () => {
+    console.log(`before sort ${tempPokemons.length}`)
     sortPokemons(tempPokemons, sortSelect.value)
+    console.log(`after sort ${tempPokemons.length}`)
+
 })
 
+
+
 typesContainer.addEventListener('click', (e) => {
+    tempPokemons = pokemons
     if (e.target === typesContainer) return
     let pokemonType = e.target.innerText.toLowerCase()
-    filterPokemons(tempPokemons, pokemonType)
+    tempPokemons = filterPokemons(tempPokemons, pokemonType)
 
 })
