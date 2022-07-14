@@ -3,7 +3,6 @@ import eslintPlugin from 'vite-plugin-eslint'
 
 // vite.config.js
 export default defineConfig({
-  plugins: [eslintPlugin()],
   server: {
     host: 'localhost',
     cors: '*',
