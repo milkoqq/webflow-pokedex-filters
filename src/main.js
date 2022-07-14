@@ -79,6 +79,7 @@ getPokemon(numOfPokemons)
 // Search function
 // ............
 inputSearch.addEventListener("keyup", (e) => {
+    e.preventDefault()
     pokeContainer.innerHTML = "";
     let searchPokemons = pokemons.filter((poke) =>
         poke.name.includes(inputSearch.value)
@@ -103,7 +104,7 @@ function sortPokemons(array, attr) {
     // console.log("After Pressing The Button:", order);
     pokeContainer.innerHTML = "";
     console.log(tempPokemons.length)
-    order === false
+    order === true
         ? array.sort((a, b) => a[attr] - b[attr])
         : array.sort((a, b) => b[attr] - a[attr]);
     array.forEach((pokemon) => {
