@@ -103,7 +103,7 @@ function sortPokemons(array, attr) {
     // console.log(attr)
     // console.log("After Pressing The Button:", order);
     pokeContainer.innerHTML = "";
-    console.log(tempPokemons.length)
+    // console.log(tempPokemons.length)
     order === true
         ? array.sort((a, b) => a[attr] - b[attr])
         : array.sort((a, b) => b[attr] - a[attr]);
@@ -113,31 +113,34 @@ function sortPokemons(array, attr) {
 }
 
 function filterPokemons(array, type) {
+
     pokeContainer.innerHTML = "";
-    console.log(`before FILTER: ${array.length}`)
 
     array = array.filter(pokemon => pokemon.types[0].type.name === type)
     array.forEach((pokemon) => {
         renderPokemon(pokemon)
     })
-    console.log(`AFTER FILTER: ${array.length}`)
+
+
     return array
 }
 
-
+console.log(order)
 sortSelect.addEventListener('change', () => {
+    console.log('==================================')
     console.log(`before sort ${tempPokemons.length}`)
     sortPokemons(tempPokemons, sortSelect.value)
     console.log(`after sort ${tempPokemons.length}`)
+    console.log(order)
 
 })
 
-
-
 typesContainer.addEventListener('click', (e) => {
+
     tempPokemons = pokemons
     if (e.target === typesContainer) return
     let pokemonType = e.target.innerText.toLowerCase()
     tempPokemons = filterPokemons(tempPokemons, pokemonType)
+
 
 })
