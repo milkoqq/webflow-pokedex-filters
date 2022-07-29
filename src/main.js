@@ -5,6 +5,8 @@ const inputSearch = document.querySelector('.search__input')
 const testPokemon = document.querySelector('#testPokemon')
 const sortSelect = document.querySelector('#sort__select')
 const typesContainer = document.querySelector('.filter__type-wrapper')
+const pokeLottie = document.querySelector('.pokemons_loader')
+const btnClear = document.querySelector('#btnClear')
 
 testPokemon.classList.add('is--test')
 
@@ -13,7 +15,7 @@ testPokemon.classList.add('is--test')
 let numOfPokemons = 151
 let pokemons = [];
 let tempPokemons;
-let sorting = 'idasc'
+
 
 
 
@@ -22,6 +24,7 @@ let html;
 
 const getPokemon = async (num) => {
     try {
+        pokeLottie.style.display = "flex"
         //Setup a mini fetch-timer.
         let time = 0;
         let intervalFetch = setInterval(() => time++, 1);
@@ -40,13 +43,14 @@ const getPokemon = async (num) => {
         //Log fetch time in console.
         clearInterval(intervalFetch); 0
         console.log(`Pokemons Fetched! in ${(time / 1000).toFixed(2)} seconds.`);
+        pokeLottie.style.display = "none"
 
         //For each pokemon display the pokemon block inside the parent container.
         pokemons.forEach((pokemon) => {
             renderPokemon(pokemon);
         });
 
-        console.log(`TEMP POKEMONS AT THE START ${tempPokemons.length}`)
+        // console.log(`TEMP POKEMONS AT THE START ${tempPokemons.length}`)
     } catch (err) {
         new Error(err, "NOT gonna catch them all today.");
     }
@@ -66,8 +70,8 @@ function renderPokemon(pokemon) {
     <div class="pokemon__id">#${pokemon.id.toString().padStart(3, '0')}</div>
     <div class="pokemon__exp">EXP: ${pokemon.base_experience}</div>
     </div>
-    <div class="pokemon__name">${pokemon.name}</div>
-    <div class="pokemon__type is--${pokemon.types[0].type.name}">${pokemon.types[0].type.name}</div>
+    <div class="pokemon__name">${pokemon.name[0].toUpperCase() + pokemon.name.slice(1)}</div>
+    <div class="pokemon__type is--${pokemon.types[0].type.name}">${pokemon.types[0].type.name[0].toUpperCase() + pokemon.types[0].type.name.slice(1)} </div>
     </div>
     `;
     pokeContainer.insertAdjacentHTML("beforeend", html);
@@ -119,7 +123,7 @@ function sortPokemons(array, attr) {
     if (attr === 'base_experience-dsc') { array.sort((a, b) => b['base_experience'] - a['base_experience']) }
     pokeContainer.innerHTML = ""
     array.forEach(pokemon => renderPokemon(pokemon))
-    console.log(attr)
+    // console.log(attr)
 }
 
 function filterPokemons(array, type) {
@@ -135,13 +139,13 @@ function filterPokemons(array, type) {
     return array
 }
 
-console.log(order)
+// console.log(order)
 sortSelect.addEventListener('change', () => {
-    console.log('==================================')
-    console.log(`before sort ${tempPokemons.length}`)
+    // console.log('==================================')
+    // console.log(`before sort ${tempPokemons.length}`)
     sortPokemons(tempPokemons, sortSelect.value)
-    console.log(`after sort ${tempPokemons.length}`)
-    console.log(order)
+    // console.log(`after sort ${tempPokemons.length}`)
+    // console.log(order)
 
 })
 
@@ -149,9 +153,15 @@ typesContainer.addEventListener('click', (e) => {
 
     tempPokemons = pokemons
     if (e.target === typesContainer) return
+    if (e.target === btnClear) {
+        pokeContainer.innerHTML = "";
+        inputSearch.value = ''
+        pokemons.forEach(pokemon => renderPokemon(pokemon))
+        return
+    }
     let pokemonType = e.target.innerText.toLowerCase()
     tempPokemons = filterPokemons(tempPokemons, pokemonType)
-    console.log(tempPokemons.length)
-    console.log(tempPokemons)
+    // console.log(tempPokemons.length)
+    // console.log(tempPokemons)
 
 })
