@@ -23,8 +23,9 @@ let tempPokemons;
 let html;
 
 const getPokemon = async (num) => {
+    pokeLottie.style.display = "flex"
     try {
-        pokeLottie.style.display = "flex"
+
         //Setup a mini fetch-timer.
         let time = 0;
         let intervalFetch = setInterval(() => time++, 1);
