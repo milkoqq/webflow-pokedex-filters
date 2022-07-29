@@ -38,7 +38,7 @@ const getPokemon = async (num) => {
         }
         tempPokemons = [...pokemons]
         //Log fetch time in console.
-        clearInterval(intervalFetch);
+        clearInterval(intervalFetch); 0
         console.log(`Pokemons Fetched! in ${(time / 1000).toFixed(2)} seconds.`);
 
         //For each pokemon display the pokemon block inside the parent container.
@@ -54,6 +54,7 @@ const getPokemon = async (num) => {
 
 // ............
 // Renderer function for each pokemon-wrapper
+// ...use data-attributes?
 // ............
 function renderPokemon(pokemon) {
     html = `
@@ -99,17 +100,26 @@ let order = true;
 
 
 function sortPokemons(array, attr) {
-    order = !order;
-    // console.log(attr)
-    // console.log("After Pressing The Button:", order);
-    pokeContainer.innerHTML = "";
-    // console.log(tempPokemons.length)
-    order === true
-        ? array.sort((a, b) => a[attr] - b[attr])
-        : array.sort((a, b) => b[attr] - a[attr]);
-    array.forEach((pokemon) => {
-        renderPokemon(pokemon);
-    });
+    // FIRST WAY FOR SINGLE BUTTON SORTING
+    //probably only for button to change onclick, doesnt workt as intended in dropdown
+    // order = !order; 
+    // // console.log(attr)
+    // // console.log("After Pressing The Button:", order);
+    // pokeContainer.innerHTML = "";
+    // // console.log(tempPokemons.length)
+    // order === true
+    //     ? array.sort((a, b) => a[attr] - b[attr])
+    //     : array.sort((a, b) => b[attr] - a[attr]);
+    // array.forEach((pokemon) => {
+    //     renderPokemon(pokemon);
+    // });
+    if (attr === 'id-asc') { array.sort((a, b) => a['id'] - b['id']) }
+    if (attr === 'id-dsc') { array.sort((a, b) => b['id'] - a['id']) }
+    if (attr === 'base_experience-asc') { array.sort((a, b) => a['base_experience'] - b['base_experience']) }
+    if (attr === 'base_experience-dsc') { array.sort((a, b) => b['base_experience'] - a['base_experience']) }
+    pokeContainer.innerHTML = ""
+    array.forEach(pokemon => renderPokemon(pokemon))
+    console.log(attr)
 }
 
 function filterPokemons(array, type) {
@@ -141,6 +151,7 @@ typesContainer.addEventListener('click', (e) => {
     if (e.target === typesContainer) return
     let pokemonType = e.target.innerText.toLowerCase()
     tempPokemons = filterPokemons(tempPokemons, pokemonType)
-
+    console.log(tempPokemons.length)
+    console.log(tempPokemons)
 
 })
